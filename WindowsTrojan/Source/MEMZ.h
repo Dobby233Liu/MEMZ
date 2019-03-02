@@ -1,7 +1,5 @@
 #define UNICODE
 
-#include "../Build/Mode.h"
-
 #ifndef MEMZ_BRAND
 #define MEMZ_BRAND "MEMZ"
 #endif
