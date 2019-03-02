@@ -3,8 +3,8 @@
 const char *sounds[] = {
 	"SystemHand",
 	"SystemQuestion",
-	"SystemExclamation",
-	IDI_ASTERISK
+	"SystemExclamation"
+	// IDI_ASTERISK
 };
 
 PAYLOADFUNCTIONDEFAULT(payloadWindowsSounds) {
