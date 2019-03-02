@@ -42,6 +42,7 @@ int SetPrivilege(LPCSTR lpPrivilegeName, WINBOOL fEnable)
 int InitNtSet(){
 	int bSuccess = SetPrivilege(SE_DEBUG_NAME, 0);
 	if (!bSuccess) return 1;
+	return 0;
 }
 int NoClose(int t){
 	HMODULE hDll = GetModuleHandle("ntdll.dll");
