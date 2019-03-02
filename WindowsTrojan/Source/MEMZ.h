@@ -1,7 +1,10 @@
 #define UNICODE
 
 #include "../Build/Mode.h"
-#include "CUSTOM_MEMZ.h"
+
+#ifndef MEMZ_BRAND
+#define MEMZ_BRAND "MEMZ"
+#endif
 
 #ifdef CLEAN
 // Enable XP styles
