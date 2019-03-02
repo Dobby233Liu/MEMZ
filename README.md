@@ -3,7 +3,7 @@ A trojan made for Danooct1's User Made Malware Series.
 
 I am not responsible for any damage made using this trojan.
 
-The build scripts and converters for the MBR payload are very noobish. You will need some things to run these:
+The converters for the MBR payload are very noobish. You will need some things to run these:
 
  - Python 2.7 and [this](https://github.com/vishnubob/python-midi) library.
  - PIL / Pillow installed in Python 2.7
