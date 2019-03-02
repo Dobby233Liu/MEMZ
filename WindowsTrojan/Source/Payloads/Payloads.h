@@ -50,3 +50,4 @@ PAYLOADHOST(payloadCrazyBus);
 #pragma once
 extern PAYLOAD payloads[];
 extern const size_t nPayloads;
+LPCTSTR errorIcons[];
