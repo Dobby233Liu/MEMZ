@@ -1,6 +1,7 @@
 #define UNICODE
 
 #include "../Build/Mode.h"
+#include "CUSTOM_MEMZ.h"
 
 #ifdef CLEAN
 // Enable XP styles

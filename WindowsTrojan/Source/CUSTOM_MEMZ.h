@@ -1,0 +1,1 @@
+char* MEMZ_BRAND = "MEMZ"

@@ -93,7 +93,7 @@ LRESULT CALLBACK mainWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPara
 If you have productive data on your system or signed in to online accounts, it is recommended to run this payload inside a \
 virtual machine in order to prevent potential data loss or changed things you might not want.\r\n\r\n\
 Do you still want to enable it?",
-"MEMZ", MB_YESNO | MB_ICONWARNING) == IDYES) {
+MEMZ_BRAND, MB_YESNO | MB_ICONWARNING) == IDYES) {
 						SendMessage((HWND)lParam, BM_SETCHECK, BST_CHECKED, NULL);
 					}
 				}

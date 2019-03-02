@@ -80,10 +80,10 @@ This malware will harm your computer and makes it unusable.\r\n\
 If you are seeing this message without knowing what you just executed, simply press No and nothing will happen.\r\n\
 If you know what this malware does and are using a safe environment to test, \
 press Yes to start it.\r\n\r\n\
-DO YOU WANT TO EXECUTE THIS MALWARE, RESULTING IN AN UNUSABLE MACHINE?", "MEMZ", MB_YESNO | MB_ICONWARNING) != IDYES ||
+DO YOU WANT TO EXECUTE THIS MALWARE, RESULTING IN AN UNUSABLE MACHINE?", MEMZ_BRAND, MB_YESNO | MB_ICONWARNING) != IDYES ||
 MessageBoxA(NULL, "THIS IS THE LAST WARNING!\r\n\r\n\
 THE CREATOR IS NOT RESPONSIBLE FOR ANY DAMAGE MADE USING THIS MALWARE!\r\n\
-STILL EXECUTE IT?", "MEMZ", MB_YESNO | MB_ICONWARNING) != IDYES) {
+STILL EXECUTE IT?", MEMZ_BRAND, MB_YESNO | MB_ICONWARNING) != IDYES) {
 			ExitProcess(0);
 		}
 	}
