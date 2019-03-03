@@ -1,0 +1,19 @@
+language: c
+before_install:
+- sudo apt install mingw32 gcc-multilib gcc-mingw-w64-i686 nasm python
+- sudo pip install pillow
+- git clone https://github.com/vishnubob/python-midi
+install:
+- cd python-midi
+- python setup.py install
+- cd ..
+script:
+- make
+deploy:
+  provider: releases
+  api_key:
+    secure: HTwNd+gYC46Fm4tN7wACHfqL0Rw1CKY9Jv4iEuKlWksKnx1lXFrh7Y9rbfDkgGj3HUeQmazBI86H6GkPXNV8oFQBzivwHqOr5EMSn3gPIUDxee0/Pc0kdxrffUCgKjJOD6vlrpf81BsizmyHZR7cZxQ/aA2ukvIiEr17rikoLdF5WvOQr2QbHnkOoop+2gM1WvZbPjHRTbtdweJJq0XY4jNo3+OICIjol0LHAllTL9rnOYInqPZP0K+cADYCJJGDyrkxs3IrKBL7VKURUarTULcSSTD4+WhkAwcbSvXN4W0uPQaL+XYNCE8YvZoifigjlBzKA3+myRz3r1oSPL9m4Yk4Ud01y1LGB0FY5JQKlDsEMitDPjIimMOjDPeJbeV/buejofAWJlrUtOq9XQwMO2S89qxot0H5sRyFKBi7bCfTELJg6vhFg2vVtGYz1zVp+DYhlLwvggS7JiSQZ/0nRKte8RbCncDzeKjp88EEJ7yegZQ07UI69wPskyLLJ+WYm4NXLlzHl7kTa6grnrrcsCB7xKBXQlPOgEffuEcuozIsAL/6A8TPNKqJ491GcRNxT8MP6JyHSxoHyvDy2qRdX7pu+T8ndGWgm8x5RI9jTknZBHAylmGH6gwh8HXCiUObttWQx3B6Q7pwtVUkHYO6N3ml2W21AaA/NONox5cEEFM=
+  skip_cleanup: true
+  file: "./WindowsTrojan/Build/MEMZ-Clean.exe"
+  on:
+    tags: true
