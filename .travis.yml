@@ -7,6 +7,7 @@ before_install:
 - sudo apt install nasm
 - sudo apt install python
 - sudo pip install pillow
+- sudo ln -s /usr/bin/x86_64-w64-mingw32-windres /usr/bin/windres
 - git clone https://github.com/vishnubob/python-midi
 install:
 - cd python-midi
