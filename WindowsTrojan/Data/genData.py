@@ -57,7 +57,7 @@ with open(sys.argv[1], "w") as cf:
 			cf.write('";\n')
 			
 			hf.write("extern const char *" + name + ";\n")
-			hf.write("#define %sLen %d\n" % (name, len(data)))
+			hf.write("#define %sLen %d\n" % (name, len(data) + 7 + 1))
 			
 			writeMode(mode, False)
 			
